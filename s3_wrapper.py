@@ -31,7 +31,7 @@ def run_translation(test_case_tar: Path, output_tar: Path) -> None:
         # -------------------------------------------
         # REPLACE THIS WITH YOUR TRANSLATION PROCESS
         # -------------------------------------------
-        demo_cmd = ["/bin/translate.sh", str(tmpdir), str(outdir)]
+        demo_cmd = ["translate", str(tmpdir), str(outdir)]
 
         stdout_log = outdir / "stdout.log"
         stderr_log = outdir / "stderr.log"
