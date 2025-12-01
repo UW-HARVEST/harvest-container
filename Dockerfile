@@ -1,5 +1,7 @@
 FROM nixos/nix
 
+RUN nix-channel --update
+
 COPY default.nix /tmp/
 COPY s3_wrapper.py /tmp/
 COPY translate.sh /tmp/

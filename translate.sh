@@ -1,22 +1,14 @@
 #!/bin/sh
 
-cp -R $1 $2/orig
-
-mkdir $2/src
-cat <<EOF > $2/src/main.rs
-fn main() {
-   println!("Hello World");
-}
+mkdir -p ~/.config/harvest
+cat > ~/.config/harvest/translate.toml <<EOF
+[tools.raw_source_to_cargo_llm]
+address = ""
+api_key = "$OPEN_ROUTER_API_KEY"
+backend = "openrouter"
+model = "x-ai/grok-code-fast-1"
+max_tokens = 10000
 EOF
 
-cat <<EOF > $2/Cargo.toml
-[package]
-name = "t"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-EOF
-
-
+translate -f -o $2 $1
 chown -R $newuid:$newgid $2/*
