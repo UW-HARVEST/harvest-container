@@ -44,7 +44,8 @@ def run_translation(test_case_tar: Path, output_tar: Path) -> None:
         # -------------------------------------------
         # REPLACE THIS WITH YOUR TRANSLATION PROCESS
         # -------------------------------------------
-        demo_cmd = ["/usr/c2rust_execution/c2rust_commands.sh", str(tmpdir), str(outdir)]
+        demo_cmd = ["translate", str(tmpdir), str(outdir)]
+        # demo_cmd = ["/usr/c2rust_execution/c2rust_commands.sh", str(tmpdir), str(outdir)]
         # demo_cmd = [Path(os.getcwd()).joinpath("c2rust_commands.sh"), str(tmpdir), str(outdir)]
 
         stdout_log = outdir / "stdout.log"
