@@ -11,13 +11,14 @@
 
 let
   # The HARVEST translation binary. Pinned to the june-te branch (the June T&E
-  # experiment, which adds the optional clar test oracle) and built against the
-  # same pinned nixpkgs as everything else.
+  # experiment: the optional clar test oracle, plus the translate-prompt fix that
+  # makes the agent finish the whole codebase in one run instead of stopping at a
+  # foundation milestone). Built against the same pinned nixpkgs as everything else.
   harvest-code = import (pkgs.fetchFromGitHub {
     owner = "UW-HARVEST";
     repo = "harvest";
-    rev = "be32b794a95ff880533db4c46093d54165b6295c";
-    hash = "sha256-Sl6x1LUKNpnwVNiacg4s603gRw5YIaUXbHKdDuxS5Rg=";
+    rev = "80debd6aaa9e17e318fa078d80b1209543b4fdd4";
+    hash = "sha256-/Lh8VtZL4sAIFd6FQC5dxvth4RgQ6veU93fjjc6xnPw=";
   }) { inherit pkgs; };
 
   # Tools the agentic Claude agent invokes from its own shell while it builds
