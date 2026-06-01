@@ -8,12 +8,20 @@ $ docker build -t harvest/harvest .
 
 ## Features
 
-WIP
+This image runs HARVEST's agentic translation pipeline, driving Claude
+(via the Anthropic API) to translate the C source project to Rust and
+then verify and repair the result. HARVEST is pinned to a specific
+commit and built from source against a pinned nixpkgs (see
+`default.nix`), and the `claude` CLI and a Rust toolchain are provided
+on the agent's PATH so it can build and test the translated crate.
 
-This "translation" image does not translation whatsoever. It merely
-copies the source project to a `orig` subdirectory in the output, and
-initializes an empty Rust/Cargo binary alongside it so the test
-infrastructure has _something_ to compile.
+## Authentication
+
+Claude runs headless against the Anthropic API; there is no interactive
+login. Provide the API key as an environment variable:
+
+- `ANTHROPIC_API_KEY` -- required. The entry point exits immediately if
+  it is unset.
 
 ## Interface expected by TRACTOR runner:
 
@@ -29,6 +37,9 @@ The container must expect the following environment:
 
 - $newuid and $newgid environment variables denoting the owner user
   and group that the output should belong to.
+
+- `ANTHROPIC_API_KEY` set to a key with enough rate/usage headroom for a
+  multi-hour run (a ~100 kloc translation can take many hours).
 
 - A current-working-directory `/usr/c2rust_execution`
 
