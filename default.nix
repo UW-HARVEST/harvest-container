@@ -1,9 +1,10 @@
 # Pin nixpkgs so the T&E image is reproducible regardless of the channel the
 # base image happens to ship. Bump the rev/hash together when updating.
+# allowUnfree is required because claude-code ships under an unfree license.
 { pkgs ? import (builtins.fetchTarball {
     url = "https://github.com/NixOS/nixpkgs/archive/25f538306313eae3927264466c70d7001dcea1df.tar.gz";
     sha256 = "sha256-ZsIrKmhp4vbBXoXXmR/tBXA/UCsAQiJL9vsgZEduhVY=";
-  }) { } }:
+  }) { config.allowUnfree = true; } }:
 
 let
   # The HARVEST translation binary. Pinned to a specific commit on main and

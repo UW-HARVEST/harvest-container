@@ -24,6 +24,11 @@ export HOME="${HOME:-/tmp/harvest-home}"
 export TMPDIR=/tmp
 mkdir -p "$HOME"
 
+# Claude Code refuses --permission-mode bypassPermissions as root unless it is
+# told it is running in a recognized sandbox. This image runs as root in an
+# ephemeral, isolated T&E container, which is exactly that, so signal it.
+export IS_SANDBOX=1
+
 # Deployment config: give the agentic agents a T&E-sized budget. ~100 kloc
 # inputs can run for many hours, so override the modest in-repo defaults (2h
 # translate / 90m verify). These are plain config keys read by harvest_translate.
