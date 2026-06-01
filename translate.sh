@@ -41,5 +41,19 @@ timeout_secs = 43200   # 12h
 timeout_secs = 28800   # 8h
 EOF
 
-translate --agentic --agentic-verify --agentic-agent claude -f -o "$2" "$1"
+# The T&E hands us a parent directory whose actual C project lives in a
+# `test_case/` subdirectory, alongside a top-level CMakeLists.txt that only does
+# `add_subdirectory(test_case)`, an optional CMakePresets.json, and an optional
+# `tests/` harness. HARVEST translates the C project, and its build_config /
+# build_project_spec stages look for configuration.json and the
+# add_executable/add_library CMakeLists at the root of what they are given -- so
+# point them at test_case/. Inputs that already are the project (no test_case/
+# child, as in the older corpus) are used unchanged.
+src="$1"
+if [ -d "$src/test_case" ]; then
+    src="$src/test_case"
+    echo "translate-wrapper: input has a test_case/ child; translating '$src'." >&2
+fi
+
+translate --agentic --agentic-verify --agentic-agent claude -f -o "$2" "$src"
 chown -R "$newuid:$newgid" "$2"/*
