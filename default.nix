@@ -10,13 +10,14 @@
   }) { config.allowUnfree = true; } }:
 
 let
-  # The HARVEST translation binary. Pinned to a specific commit on main and
-  # built against the same pinned nixpkgs as everything else.
+  # The HARVEST translation binary. Pinned to the june-te branch (the June T&E
+  # experiment, which adds the optional clar test oracle) and built against the
+  # same pinned nixpkgs as everything else.
   harvest-code = import (pkgs.fetchFromGitHub {
     owner = "UW-HARVEST";
     repo = "harvest";
-    rev = "5214d76c0f017b7a0ccf8231bcaa83f0ee911281";
-    hash = "sha256-IBihlttfGzNcLoSeIC+K9N1nbpNnjHHNvXu0Sc57mWE=";
+    rev = "be32b794a95ff880533db4c46093d54165b6295c";
+    hash = "sha256-Sl6x1LUKNpnwVNiacg4s603gRw5YIaUXbHKdDuxS5Rg=";
   }) { inherit pkgs; };
 
   # Tools the agentic Claude agent invokes from its own shell while it builds
@@ -28,6 +29,9 @@ let
     pkgs.gcc            # provides `cc`, the linker rustc drives
     pkgs.binutils
     pkgs.pkg-config
+    pkgs.cmake          # the clar harness (and many C projects) build via CMake
+    pkgs.gnumake        # cmake's default generator backend
+    pkgs.python3        # clar's generate.py emits the test suite
     pkgs.git
     pkgs.cacert         # TLS roots for cargo fetches and the Anthropic API
     pkgs.coreutils-full # provides `timeout`, the agent budget wrapper

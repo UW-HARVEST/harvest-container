@@ -50,10 +50,21 @@ EOF
 # point them at test_case/. Inputs that already are the project (no test_case/
 # child, as in the older corpus) are used unchanged.
 src="$1"
+clar_cfg=""
 if [ -d "$src/test_case" ]; then
     src="$src/test_case"
     echo "translate-wrapper: input has a test_case/ child; translating '$src'." >&2
+    # June T&E experiment: if the parent also ships a clar test harness, hand the
+    # parent path to the verify stage so it can build and run those tests against
+    # the original C as a behavioral oracle (see verify_fix_agentic). The value
+    # has no spaces (container temp paths), so the unquoted expansion below is
+    # the intended two-argument split.
+    if [ -d "$1/tests" ]; then
+        clar_cfg="--config tools.verify_fix_agentic.clar_parent_dir=$1"
+        echo "translate-wrapper: clar tests present; enabling the verify oracle." >&2
+    fi
 fi
 
-translate --agentic --agentic-verify --agentic-agent claude -f -o "$2" "$src"
+# shellcheck disable=SC2086
+translate --agentic --agentic-verify --agentic-agent claude $clar_cfg -f -o "$2" "$src"
 chown -R "$newuid:$newgid" "$2"/*
