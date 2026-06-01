@@ -1,9 +1,12 @@
 # Pin nixpkgs so the T&E image is reproducible regardless of the channel the
 # base image happens to ship. Bump the rev/hash together when updating.
-# allowUnfree is required because claude-code ships under an unfree license.
+# This is a pinned nixpkgs-unstable rev: it ships claude-code 2.1.154, which
+# defaults to the latest Opus (claude-opus-4-8); the 25.11/26.05 stable
+# channels still default to opus-4-7. allowUnfree is required because
+# claude-code is distributed under an unfree license.
 { pkgs ? import (builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/archive/25f538306313eae3927264466c70d7001dcea1df.tar.gz";
-    sha256 = "sha256-ZsIrKmhp4vbBXoXXmR/tBXA/UCsAQiJL9vsgZEduhVY=";
+    url = "https://github.com/NixOS/nixpkgs/archive/e9a7635a57597d9754eccebdfc7045e6c8600e6b.tar.gz";
+    sha256 = "sha256-u6WU/yd/o8iYQrHX3RAwO1hYa3LkoSL+WNQD0rJfJZQ=";
   }) { config.allowUnfree = true; } }:
 
 let
