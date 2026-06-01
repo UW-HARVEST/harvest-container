@@ -42,6 +42,10 @@ let
     src = ./.;
     buildInputs = [ harvest-code pkgs.claude-code ] ++ agentRuntime;
     nativeBuildInputs = [ pkgs.makeWrapper ];
+    # cmake is only needed on the agent's runtime PATH (via makeBinPath below),
+    # not to build this wrapper. Suppress cmake's setup hook, which would
+    # otherwise try to cmake-configure our source (which has no CMakeLists.txt).
+    dontUseCmakeConfigure = true;
     installPhase = ''
       mkdir -p $out/bin
       cp $src/translate.sh $out/bin/translate-wrapper
