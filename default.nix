@@ -17,8 +17,8 @@ let
   harvest-code = import (pkgs.fetchFromGitHub {
     owner = "UW-HARVEST";
     repo = "harvest";
-    rev = "80debd6aaa9e17e318fa078d80b1209543b4fdd4";
-    hash = "sha256-/Lh8VtZL4sAIFd6FQC5dxvth4RgQ6veU93fjjc6xnPw=";
+    rev = "1680e6b7db34d6d1b88049b96d0cdf2d3dce1959";
+    hash = "sha256-djPjZiqieSYW4nqji4VCvfeqPoE0jLxicKFehFWLn3w=";
   }) { inherit pkgs; };
 
   # Tools the agentic Claude agent invokes from its own shell while it builds
@@ -41,7 +41,7 @@ let
   translate = pkgs.stdenv.mkDerivation rec {
     name = "harvest-translation";
     src = ./.;
-    buildInputs = [ harvest-code pkgs.claude-code ] ++ agentRuntime;
+    buildInputs = [ harvest-code pkgs.claude-code pkgs.pkg-config pkgs.llhttp pkgs.zlib pkgs.pcre2 pkgs.cmake pkgs.python3 pkgs.openssl ] ++ agentRuntime;
     nativeBuildInputs = [ pkgs.makeWrapper ];
     # cmake is only needed on the agent's runtime PATH (via makeBinPath below),
     # not to build this wrapper. Suppress cmake's setup hook, which would
